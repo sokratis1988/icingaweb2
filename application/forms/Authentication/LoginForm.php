@@ -109,7 +109,7 @@ class LoginForm extends Form
         $authenticated = $authChain->authenticate($user, $password);
         if ($authenticated) {
             $auth->setAuthenticated($user);
-            if($rememberMeIsChecked) {
+            if ($rememberMeIsChecked) {
                 $data = $this->encryptRememberMeData($user->getUsername(), $password);
                 $data = implode("|", $data);
 
@@ -177,7 +177,8 @@ class LoginForm extends Form
      * @param $password
      * @return array
      */
-    public function encryptRememberMeData($username,$password) {
+    public function encryptRememberMeData($username, $password)
+    {
 
         $res = openssl_pkey_new(
             [
