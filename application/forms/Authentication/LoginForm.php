@@ -108,8 +108,7 @@ class LoginForm extends Form
         if ($authenticated) {
             $auth->setAuthenticated($user);
             if ($this->getElement('rememberme')->isChecked()) {
-                $data = $this->encryptRememberMeData($user->getUsername(), $password);
-                $data = implode('|', $data);
+                $data = "";
 
                 $this->getResponse()->setCookie(
                     (new RememberMeCookie())->setValue($data)
