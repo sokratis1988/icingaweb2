@@ -13,7 +13,7 @@ class RSATest extends BaseTestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    function testLoadKeyThrowsExceptionIfMoreThanTwoKeysGiven()
+    public function testLoadKeyThrowsExceptionIfMoreThanTwoKeysGiven()
     {
         (new RSA())->loadKey('one','two','three');
     }
@@ -21,7 +21,7 @@ class RSATest extends BaseTestCase
     /**
      * @expectedException UnexpectedValueException
      */
-    function testGetPublicKeyThrowsExceptionIfNoPublicKeySet()
+    public function testGetPublicKeyThrowsExceptionIfNoPublicKeySet()
     {
         (new RSA())->getPublicKey();
     }
@@ -29,12 +29,11 @@ class RSATest extends BaseTestCase
     /**
      * @expectedException UnexpectedValueException
      */
-    function testGetPrivateKeyThrowsExceptionIfNoPrivateKeySet()
+    public function testGetPrivateKeyThrowsExceptionIfNoPrivateKeySet()
     {
         (new RSA())->getPrivateKey();
     }
-
-    function testLoadKeyAutomaticallyDetectsThePublicAndPrivateKey()
+    public function testLoadKeyAutomaticallyDetectsThePublicAndPrivateKey()
     {
         list($privateKey, $publicKey) = RSA::keygen();
 
@@ -47,45 +46,39 @@ class RSATest extends BaseTestCase
         $this->assertSame($publicKey, $rsa->getPublicKey());
     }
 
-    function testEncryptReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
+    public function testEncryptReturnsEmptyArrayIfNoArgumentsGiven()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame(empty($rsa->encrypt()), true);
-        $this->assertSame(empty($rsa->encrypt('one')), false);
-        $this->assertSame(empty($rsa->encrypt(false)), false);
-        $this->assertSame(empty(array_filter($rsa->encrypt())), true);
-        $this->assertSame(empty(array_filter($rsa->encrypt('one'))), false);
+        $this->assertSame([], $rsa->encrypt());
     }
 
-    function testEncryptToBase64ReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
+    public function testEncryptionAndDecryption()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame(empty($rsa->encryptToBase64()), true);
-        $this->assertSame(empty($rsa->encryptToBase64('one')), false);
-        $this->assertSame(empty($rsa->encryptToBase64(false)), false);
-        $this->assertSame(empty(array_filter($rsa->encryptToBase64())), true);
-        $this->assertSame(empty(array_filter($rsa->encryptToBase64('one'))), false);
+
+        $data = ['foo', 'bar'];
+
+        $this->assertSame($data, $rsa->decrypt(...$rsa->encrypt(...$data)));
     }
 
-    function testDecryptReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
+    public function testEncryptionToBase64AndDecryptionFromBase64()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $encrypted = $rsa->encrypt('one');
-        $this->assertSame($rsa->decrypt(...$encrypted), ['one']);
-        $this->assertSame(empty($rsa->decrypt()), true);
-        $this->assertSame(empty($rsa->decrypt(...$encrypted)), false);
-        $this->assertSame(empty(array_filter($rsa->decrypt())), true);
-        $this->assertSame(empty(array_filter($rsa->decrypt(...$encrypted))), false);
-    }
 
-    function testDecryptFromBase64ReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
+        $data = ['foo', 'bar'];
+
+        $this->assertSame($data, $rsa->decryptFromBase64(...$rsa->encryptToBase64(...$data)));
+    }
+    
+    public function testDecryptReturnsExactSameValuesAsEncrypted()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $encrypted = $rsa->encryptToBase64('one');
-        $this->assertSame($rsa->decryptFromBase64(...$encrypted), ['one']);
-        $this->assertSame(empty($rsa->decryptFromBase64()), true);
-        $this->assertSame(empty($rsa->decryptFromBase64(...$encrypted)), false);
-        $this->assertSame(empty(array_filter($rsa->decryptFromBase64())), true);
-        $this->assertSame(empty(array_filter($rsa->decryptFromBase64(...$encrypted))), false);
+        $data = ['int' => 1, 'float' => 1.1, 'yes' => true, 'no' => false, 'null' => null, 'empty-string' => ''];
+        $encodedData = json_encode($data);
+        $encrypted = $rsa->encrypt($encodedData);
+        $decrypted = $rsa->decrypt(...$encrypted);
+        $decodedData = json_decode($decrypted[0],true);
+        $this->assertSame($decodedData, $data);
+
     }
 }
