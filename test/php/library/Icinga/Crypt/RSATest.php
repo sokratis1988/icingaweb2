@@ -47,39 +47,45 @@ class RSATest extends BaseTestCase
         $this->assertSame($publicKey, $rsa->getPublicKey());
     }
 
-    /**
-     * @expectedException UnexpectedValueException
-     */
-    function testEncryptThrowsExceptionIfNoParameterOrEmptyValueGiven()
+    function testEncryptReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $rsa->encrypt();
+        $this->assertSame(empty($rsa->encrypt()), true);
+        $this->assertSame(empty($rsa->encrypt('one')), false);
+        $this->assertSame(empty($rsa->encrypt(false)), false);
+        $this->assertSame(empty(array_filter($rsa->encrypt())), true);
+        $this->assertSame(empty(array_filter($rsa->encrypt('one'))), false);
     }
 
-    /**
-     * @expectedException UnexpectedValueException
-     */
-    function testEncryptToBase64ThrowsExceptionIfNoParameterOrEmptyValueGiven()
+    function testEncryptToBase64ReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $rsa->encryptToBase64();
+        $this->assertSame(empty($rsa->encryptToBase64()), true);
+        $this->assertSame(empty($rsa->encryptToBase64('one')), false);
+        $this->assertSame(empty($rsa->encryptToBase64(false)), false);
+        $this->assertSame(empty(array_filter($rsa->encryptToBase64())), true);
+        $this->assertSame(empty(array_filter($rsa->encryptToBase64('one'))), false);
     }
 
-    /**
-     * @expectedException UnexpectedValueException
-     */
-    function testDecryptThrowsExceptionIfNoParameterOrEmptyValueGiven()
+    function testDecryptReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $rsa->decrypt();
+        $encrypted = $rsa->encrypt('one');
+        $this->assertSame($rsa->decrypt(...$encrypted), ['one']);
+        $this->assertSame(empty($rsa->decrypt()), true);
+        $this->assertSame(empty($rsa->decrypt(...$encrypted)), false);
+        $this->assertSame(empty(array_filter($rsa->decrypt())), true);
+        $this->assertSame(empty(array_filter($rsa->decrypt(...$encrypted))), false);
     }
 
-    /**
-     * @expectedException UnexpectedValueException
-     */
-    function testDecryptFromBase64ThrowsExceptionIfNoParameterOrEmptyValueGiven()
+    function testDecryptFromBase64ReturnEmptyArrayIfNoParameterGivenAndReturnEncryptedValueIfParameterIsGiven()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $rsa->decryptFromBase64();
+        $encrypted = $rsa->encryptToBase64('one');
+        $this->assertSame($rsa->decryptFromBase64(...$encrypted), ['one']);
+        $this->assertSame(empty($rsa->decryptFromBase64()), true);
+        $this->assertSame(empty($rsa->decryptFromBase64(...$encrypted)), false);
+        $this->assertSame(empty(array_filter($rsa->decryptFromBase64())), true);
+        $this->assertSame(empty(array_filter($rsa->decryptFromBase64(...$encrypted))), false);
     }
 }
