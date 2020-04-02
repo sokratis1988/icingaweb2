@@ -33,6 +33,7 @@ class RSATest extends BaseTestCase
     {
         (new RSA())->getPrivateKey();
     }
+
     public function testLoadKeyAutomaticallyDetectsThePublicAndPrivateKey()
     {
         list($privateKey, $publicKey) = RSA::keygen();
@@ -69,16 +70,17 @@ class RSATest extends BaseTestCase
 
         $this->assertSame($data, $rsa->decryptFromBase64(...$rsa->encryptToBase64(...$data)));
     }
-    
-    public function testDecryptReturnsExactSameValuesAsEncrypted()
+
+    public function testEncryptionAndDecryptionWithJSON()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $data = ['int' => 1, 'float' => 1.1, 'yes' => true, 'no' => false, 'null' => null, 'empty-string' => ''];
-        $encodedData = json_encode($data);
-        $encrypted = $rsa->encrypt($encodedData);
-        $decrypted = $rsa->decrypt(...$encrypted);
-        $decodedData = json_decode($decrypted[0],true);
-        $this->assertSame($decodedData, $data);
 
+        $data = ['int' => 1, 'float' => 1.1, 'yes' => true, 'no' => false, 'null' => null, 'empty-string' => ''];
+        $encoded = json_encode($data);
+        $encrypted = $rsa->encrypt($encoded);
+        $decrypted = $rsa->decrypt(...$encrypted);
+        $decoded = json_decode($decrypted[0],true);
+
+        $this->assertSame($decoded, $data);
     }
 }
