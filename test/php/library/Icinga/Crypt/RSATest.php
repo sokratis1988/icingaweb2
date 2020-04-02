@@ -47,30 +47,6 @@ class RSATest extends BaseTestCase
         $this->assertSame($publicKey, $rsa->getPublicKey());
     }
 
-    public function testEncryptReturnsEmptyArrayIfNoArgumentsGiven()
-    {
-        $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame([], $rsa->encrypt());
-    }
-
-    public function testEncryptionToBase64ReturnsEmptyArrayIfNoArgumentsGiven()
-    {
-        $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame([], $rsa->encryptToBase64());
-    }
-
-    public function testDecryptReturnsEmptyArrayIfEmptyArrayGiven()
-    {
-        $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame([], $rsa->decrypt(...[]));
-    }
-
-    public function testDecryptFromBase64ReturnsEmptyArrayIfEmptyArrayGiven()
-    {
-        $rsa = (new RSA())->loadKey(...RSA::keygen());
-        $this->assertSame([], $rsa->decryptFromBase64(...[]));
-    }
-
     public function testEncryptionAndDecryption()
     {
         $rsa = (new RSA())->loadKey(...RSA::keygen());
