@@ -15,7 +15,7 @@ class RSATest extends BaseTestCase
      */
     public function testLoadKeyThrowsExceptionIfMoreThanTwoKeysGiven()
     {
-        (new RSA())->loadKey('one','two','three');
+        (new RSA())->loadKey('one', 'two', 'three');
     }
 
     /**
