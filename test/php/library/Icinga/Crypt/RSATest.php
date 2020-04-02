@@ -39,10 +39,12 @@ class RSATest extends BaseTestCase
         list($privateKey, $publicKey) = RSA::keygen();
 
         $rsa = (new RSA())->loadKey($publicKey, $privateKey);
+
         $this->assertSame($privateKey, $rsa->getPrivateKey());
         $this->assertSame($publicKey, $rsa->getPublicKey());
 
         $rsa = (new RSA())->loadKey($privateKey, $publicKey);
+
         $this->assertSame($privateKey, $rsa->getPrivateKey());
         $this->assertSame($publicKey, $rsa->getPublicKey());
     }
@@ -70,6 +72,7 @@ class RSATest extends BaseTestCase
         $rsa = (new RSA())->loadKey(...RSA::keygen());
 
         $data = ['int' => 1, 'float' => 1.1, 'yes' => true, 'no' => false, 'null' => null, 'empty-string' => ''];
+
         $encoded = json_encode($data);
         $encrypted = $rsa->encrypt($encoded);
         $decrypted = $rsa->decrypt(...$encrypted);
