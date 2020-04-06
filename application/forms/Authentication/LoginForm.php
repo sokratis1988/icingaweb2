@@ -113,7 +113,7 @@ class LoginForm extends Form
             if ($this->getElement('rememberme')->isChecked()) {
                     $rememberMe = RememberMe::fromCredentials($user->getUsername(), $password);
                     $this->getResponse()->setCookie(
-                        ($rememberMe->getCookie())
+                        $rememberMe->getCookie()
                     );
 
                     $rememberMe->persist();
