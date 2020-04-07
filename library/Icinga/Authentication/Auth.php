@@ -396,19 +396,4 @@ class Auth
         $this->user = null;
         Session::getSession()->purge();
     }
-
-    /**
-     * Read the 'remember-me' cookie and authenticate
-     *
-     * @return bool     True if user authentication is succeed, false if not
-     */
-    public function authenticateFromRememberMeCookie()
-    {
-        $rememberMe = RememberMe::fromCookie();
-        if ($rememberMe->authenticate()) {
-            //TODO renew cookie
-        }
-
-        return $rememberMe->authenticate();
-    }
 }
