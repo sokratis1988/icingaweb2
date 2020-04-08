@@ -54,8 +54,12 @@ class RSATest extends BaseTestCase
         $rsa = (new RSA())->loadKey(...RSA::keygen());
 
         $data = ['foo', 'bar'];
+        $data2 = 'foo';
+        $data3 = [];
 
-        $this->assertSame($data, $rsa->decrypt(...$rsa->encrypt(...$data)));
+        $this->assertSame($data, $rsa->decrypt($rsa->encrypt($data)));
+        $this->assertSame($data2, $rsa->decrypt($rsa->encrypt($data2)));
+        $this->assertSame($data3, $rsa->decrypt($rsa->encrypt($data3)));
     }
 
     public function testEncryptionToBase64AndDecryptionFromBase64()
@@ -63,8 +67,12 @@ class RSATest extends BaseTestCase
         $rsa = (new RSA())->loadKey(...RSA::keygen());
 
         $data = ['foo', 'bar'];
+        $data2 = 'foo';
+        $data3 = [];
 
-        $this->assertSame($data, $rsa->decryptFromBase64(...$rsa->encryptToBase64(...$data)));
+        $this->assertSame($data, $rsa->decryptFromBase64($rsa->encryptToBase64($data)));
+        $this->assertSame($data2, $rsa->decryptFromBase64($rsa->encryptToBase64($data2)));
+        $this->assertSame($data3, $rsa->decryptFromBase64($rsa->encryptToBase64($data3)));
     }
 
     public function testEncryptionAndDecryptionWithJSON()
@@ -75,8 +83,8 @@ class RSATest extends BaseTestCase
 
         $encoded = json_encode($data);
         $encrypted = $rsa->encrypt($encoded);
-        $decrypted = $rsa->decrypt(...$encrypted);
-        $decoded = json_decode($decrypted[0],true);
+        $decrypted = $rsa->decrypt($encrypted);
+        $decoded = json_decode($decrypted,true);
 
         $this->assertSame($decoded, $data);
     }
