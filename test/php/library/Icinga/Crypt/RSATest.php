@@ -84,7 +84,7 @@ class RSATest extends BaseTestCase
         $encoded = json_encode($data);
         $encrypted = $rsa->encrypt($encoded);
         $decrypted = $rsa->decrypt($encrypted);
-        $decoded = json_decode($decrypted,true);
+        $decoded = json_decode($decrypted, true);
 
         $this->assertSame($decoded, $data);
     }
