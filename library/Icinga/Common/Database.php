@@ -1,6 +1,6 @@
 <?php
 
-namespace Icinga\Rememberme\Common;
+namespace Icinga\Common;
 
 use Icinga\Application\Config as IcingaConfig;
 use Icinga\Data\ResourceFactory;
