@@ -12,8 +12,9 @@ trait Database
 {
     protected function getDb()
     {
-        $config = new SqlConfig(ResourceFactory::getResourceConfig('remember-me'));
-
+        $config = new SqlConfig(ResourceFactory::getResourceConfig(
+            IcingaConfig::app()->get('global', 'config_resource')
+        ));
         $config->options = [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET SESSION SQL_MODE='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE"
