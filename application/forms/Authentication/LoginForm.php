@@ -47,26 +47,25 @@ class LoginForm extends Form
             'text',
             'username',
             array(
-                'autocapitalize' => 'off',
-                'class' => false === isset($formData['username']) ? 'autofocus' : '',
-                'label' => $this->translate('Username'),
-                'required' => true
+                'autocapitalize'    => 'off',
+                'class'             => false === isset($formData['username']) ? 'autofocus' : '',
+                'label'             => $this->translate('Username'),
+                'required'          => true
             )
         );
         $this->addElement(
             'password',
             'password',
             array(
-                'required' => true,
-                'label' => $this->translate('Password'),
-                'class' => isset($formData['username']) ? 'autofocus' : ''
+                'required'      => true,
+                'label'         => $this->translate('Password'),
+                'class'         => isset($formData['username']) ? 'autofocus' : ''
             )
         );
         $this->addElement(
             'checkbox',
             'rememberme',
             [
-                'required' => false,
                 'label' => $this->translate('Remember me'),
             ]
         );
@@ -115,7 +114,6 @@ class LoginForm extends Form
                     $this->getResponse()->setCookie(
                         $rememberMe->getCookie()
                     );
-
                     $rememberMe->persist();
             }
             // Call provided AuthenticationHook(s) after successful login
